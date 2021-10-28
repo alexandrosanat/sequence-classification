@@ -49,15 +49,31 @@ def f1_m(y_true, y_pred):
 
 
 top_words = len(word_dictionary)
-embedding_vecor_length = 32
+embedding_vector_length = 32
 model = Sequential()
-model.add(Embedding(top_words, embedding_vecor_length, input_length=max_sequence_length))
+model.add(Embedding(top_words, embedding_vector_length, input_length=max_sequence_length))
 model.add(LSTM(100))
 model.add(Dense(1, activation='sigmoid'))
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=[f1_m])
 print(model.summary())
-model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=50, batch_size=64)
+model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=200, batch_size=64)
 
+"""
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+embedding (Embedding)        (None, 38, 32)            704       
+_________________________________________________________________
+lstm (LSTM)                  (None, 100)               53200     
+_________________________________________________________________
+dense (Dense)                (None, 1)                 101       
+=================================================================
+Total params: 54,005
+Trainable params: 54,005
+Non-trainable params: 0
+_________________________________________________________________
+"""
 
 # Final evaluation of the model
 scores = model.evaluate(X_test, y_test, verbose=0)
