@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 from keras.preprocessing import sequence
 import torch
@@ -18,7 +19,11 @@ max_sequence_length = max(data['sequence'].apply(len))
 y = data.pop('class')
 X = data
 
-X_train, X_test, y_train, y_test = train_test_split(X.values, y.values.reshape(-1, 1), test_size=0.4, random_state=1, stratify=y)
+X_train, X_test, y_train, y_test = train_test_split(X.values,
+                                                    y.values.reshape(-1, 1),
+                                                    test_size=0.4,
+                                                    random_state=1,
+                                                    stratify=y)
 
 X_train = sequence.pad_sequences(np.squeeze(X_train), maxlen=max_sequence_length)
 X_test = sequence.pad_sequences(np.squeeze(X_test), maxlen=max_sequence_length)
